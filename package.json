@@ -1,15 +1,13 @@
 {
   "name": "sed-win",
-  "version": "1.1.7",
+  "version": "1.0.1",
   "description": "sed for Windows",
   "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "dev": "tsc --watch",
-    "start": "node dist/bin/index.js",
-    "start:dev": "ts-node src/bin/index.ts"
+    "dev": "tsc --watch"
   },
   "bin": {
     "sed-win": "dist/bin/index.js",
