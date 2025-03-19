@@ -1,0 +1,48 @@
+{
+  "name": "sed-win",
+  "version": "1.1.7",
+  "description": "sed for Windows",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/bin/index.js",
+    "start:dev": "ts-node src/bin/index.ts"
+  },
+  "bin": {
+    "sed-win": "dist/bin/index.js",
+    "sed": "dist/bin/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cityuderek/sed-win.git"
+  },
+  "keywords": [
+    "node"
+  ],
+  "author": "Derek Lam",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cityuderek/sed-win/issues"
+  },
+  "homepage": "https://github.com/cityuderek/sed-win#readme",
+  "preferGlobal": true,
+  "dependencies": {
+    "colors": "^1.4.0",
+    "commander": "^13.1.0",
+    "dotenv": "^16.4.7",
+    "fs-extra": "^11.3.0",
+    "glob": "^11.0.1",
+    "lodash": "^4.17.21",
+    "mysql2": "^3.12.0",
+    "url": "^0.11.4"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/lodash": "^4.17.15",
+    "@types/node": "^22.13.4",
+    "typescript": "^5.7.3"
+  }
+}

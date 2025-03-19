@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "ESNext",
+    "lib": ["esnext"],
+    "allowJs": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*.ts", "src/crlf.d.ts"],
+  "exclude": ["node_modules"]
+}
