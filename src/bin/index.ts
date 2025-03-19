@@ -13,9 +13,10 @@ program
   .option('-e <expression...>', 'sed expressions to apply')
   .option('-i', 'edit file in place')
   .option('-d', 'debug mode')
+  .option('-v', 'enable variable such as $utcnow')
   .argument('[file...]', 'input file')
   .action(async (file, options) => {
-    const { e, i, d } = options;
+    const { e, i, d, v } = options;
     const logd = (...args: any[]) => {
       if (d) {
         console.log(...args);
@@ -41,7 +42,7 @@ program
     // console.log('file', file3);
     // console.log('es', e2);
     // console.log('i', i);
-    await dsed(filepath, e2, i, d);
+    await dsed(filepath, e2, i, v, d);
   });
 
 // console.log('process.argv', process.argv);

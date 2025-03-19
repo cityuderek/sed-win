@@ -2,14 +2,26 @@
 
 sed for Windows. It doesn't support everything like sed, but I'm working on it.
 
+## Option
+
+- -i Edit the file in place without printing to the console (overwrite the file)
+  (same as sed).
+
+- -e Allows multiple commands to be executed (same as sed).
+
+- -v variable (extra feature)
+
+## Variables:
+
+- $utcnow, output 2025-03-19T11:31:59Z
+
 ## Supported features:
 
 - Special characters such as single quote, double quote
 
-- -i Edit the file in place without printing to the console (overwrite the
-  file).
+- -i
 
-- -e Allows multiple commands to be executed.
+- -e
 
 ## Examples:
 
@@ -45,6 +57,14 @@ Save to original file
 
 ```
 sed 's/bbb=.*/bbb=222/' 01.txt
+```
+
+Variable: $utcnow, output 2025-03-19T11:31:59Z
+
+Require -v flag
+
+```
+sed 's/bbb=.*/bbb=$utcnow/' -v 01.txt
 ```
 
 ## Pending:

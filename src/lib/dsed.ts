@@ -1,9 +1,11 @@
 import fs from 'fs';
+import { DateTime } from 'luxon';
 
 export const dsed = async (
   filepath: string,
   expressions: string[],
   inPlace: boolean,
+  useVariable: boolean,
   isDebug: boolean
 ): Promise<void> => {
   const logd = (...args: any[]) => {
@@ -30,17 +32,27 @@ export const dsed = async (
     const content = fs.readFileSync(filepath, 'utf8');
     let updatedContent = content;
 
+    // Get current UTC datetime in ISO format without milliseconds
+    const now = DateTime.utc().toFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
     expressions.forEach((expression: string) => {
       expression = expression.replace(/^['"]|['"]$/g, ''); // Remove extra quotes
-      const regex = /^s\/(.*?)\/(.*?)\/$/; // Match general patterns
+      const regex = /^s\/(.*?)\/(.*?)\/$/; // Match substitution pattern
       const match = expression.match(regex);
 
       if (match) {
-        const searchValue = match[1];
-        const replaceValue = match[2];
+        let searchValue = match[1];
+        let replaceValue = match[2];
+
+        if (useVariable) {
+          if (replaceValue.includes('$utcnow')) {
+            replaceValue = replaceValue.replace('$utcnow', now);
+          }
+        }
+
         logd(`searchValue=${searchValue}, replaceValue=${replaceValue}`);
         updatedContent = updatedContent.replace(
-          new RegExp(searchValue, 'g'), // Directly apply the pattern
+          new RegExp(searchValue, 'g'), // Apply the search pattern globally
           replaceValue
         );
       } else {
