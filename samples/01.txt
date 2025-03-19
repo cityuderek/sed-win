@@ -1,0 +1,8 @@
+aaa
+bbb=111
+no_quote1=value111 abc
+no_quote2=value222 abc
+single_quote='value111 abc'
+double_quote="value222 abc"
+mixed="mixed_'value'333 abc"
+ccc=666

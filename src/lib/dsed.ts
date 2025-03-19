@@ -11,14 +11,19 @@ export const dsed = async (
       console.log(...args);
     }
   };
+
   if (!expressions || expressions.length === 0) {
     console.error('Error: No expressions provided.');
     process.exit(1);
   }
-  if (isDebug) {
-    logd(`filepath=${filepath}`);
-    logd(`expressions=`, expressions);
-    logd(`inPlace=${inPlace}`);
+
+  logd(`filepath=${filepath}`);
+  logd(`expressions=`, expressions);
+  logd(`inPlace=${inPlace}`);
+
+  if (!fs.existsSync(filepath)) {
+    console.error(`Error: File not found: ${filepath}`);
+    process.exit(1);
   }
 
   try {
@@ -26,15 +31,16 @@ export const dsed = async (
     let updatedContent = content;
 
     expressions.forEach((expression: string) => {
-      expression = expression.replace(/^['"]|['"]$/g, '');
-      const regex = /^s\/(.+?)\/(.+?)\/$/;
+      expression = expression.replace(/^['"]|['"]$/g, ''); // Remove extra quotes
+      const regex = /^s\/(.*?)\/(.*?)\/$/; // Match general patterns
       const match = expression.match(regex);
+
       if (match) {
         const searchValue = match[1];
         const replaceValue = match[2];
         logd(`searchValue=${searchValue}, replaceValue=${replaceValue}`);
         updatedContent = updatedContent.replace(
-          new RegExp(searchValue, 'g'),
+          new RegExp(searchValue, 'g'), // Directly apply the pattern
           replaceValue
         );
       } else {

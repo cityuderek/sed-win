@@ -4,31 +4,47 @@ sed for Windows. It doesn't support everything like sed, but I'm working on it.
 
 ## Supported features:
 
+- Special characters such as single quote, double quote
+
 - -i Edit the file in place without printing to the console (overwrite the
   file).
 
 - -e Allows multiple commands to be executed.
 
-## Usage:
+## Examples:
 
 ```
 sed 's/bbb=.*/bbb=222/' 01.txt
 ```
 
+Single quote
+
 ```
-sed 's/\'single_quote_value91/\'single_quote_value106/' 01.txt
+sed "s/'value111.*'/'value11191'/" 01.txt
 ```
+
+Double quote
+
+```
+sed "s/\"value222.*\"/\"value22291\"/" 01.txt
+```
+
+-e
 
 ```
 sed -e 's/bbb=111/bbb=222/' 01.txt
 ```
 
-```
-sed -e 's/aaa=111/aaa=222/' -e 's/bbb=111/bbb=222/' 01.txt
-```
+Multiple -e
 
 ```
-sed -i -e 's/aaa=111/aaa=222/' -e 's/bbb=111/bbb=222/' 01.txt
+sed -e 's/aaa.*/aaa=222/' -e 's/bbb=111/bbb=222/' 01.txt
+```
+
+Save to original file
+
+```
+sed 's/bbb=.*/bbb=222/' 01.txt
 ```
 
 ## Pending:
