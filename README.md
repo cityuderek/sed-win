@@ -56,6 +56,9 @@ sed "s/bbb=.*/bbb=${utcnow}, ${now}, ${date}, ${date8}, ${datetime15}/" 01.txt
 
 ## Examples:
 
+Check https://github.com/cityuderek/sed-win/tree/master/samples for more
+examples.
+
 Basic sed
 
 ```

@@ -18,6 +18,9 @@
     "url": "git+https://github.com/cityuderek/sed-win.git"
   },
   "keywords": [
+    "sed",
+    "windows",
+    "cli",
     "node"
   ],
   "author": "Derek Lam",
