@@ -1,32 +1,50 @@
 #!/usr/bin/env node
 
-import { Command, CommanderError } from 'commander';
+import { Command } from 'commander';
+import fs from 'fs';
 import { dsed } from '../lib/dsed.js';
 
 const program = new Command();
-import fs from 'fs';
 
-program.name('sed-win').description('sed for Windows.').version('1.0.1');
+program.name('sed-win').description('sed for Windows').version('1.0.1');
 
+// Handle sed-like commands
 program
-  .command('tt')
-  .argument('[p1]', 'p1')
-  .action(async (p1: string = '') => {
-    console.log(`test p1=${p1}`);
-    // await updateVersion('ngt.json');
-    // LogAnalysis3.test();
-    // console.log(`tt; envFile=${envFile}`);
-    // const config = readEnvFileToJson(envFile);
-    // console.log(`config`, config);
+  .option('-e <expression...>', 'sed expressions to apply')
+  .option('-i', 'edit file in place')
+  .option('-d', 'debug mode')
+  .argument('[file...]', 'input file')
+  .action(async (file, options) => {
+    const { e, i, d } = options;
+    const logd = (...args: any[]) => {
+      if (d) {
+        console.log(...args);
+      }
+    };
+    logd('file', file);
+    logd('options', options);
+    let filepath;
+    let e2 = e;
+    if (!file || file.length === 0) {
+      // logd('file empty');
+      filepath = e2[e2.length - 1];
+      e2 = e2.slice(0, -1);
+    } else if (file.length === 2) {
+      // logd('file.length is 2');
+      e2 = [file[0]];
+      filepath = file[1];
+    } else {
+      filepath = file[0];
+    }
+    // logd(`file.length=${file.length}`);
+
+    // console.log('file', file3);
+    // console.log('es', e2);
+    // console.log('i', i);
+    await dsed(filepath, e2, i, d);
   });
 
-program
-  .command('now')
-  .description('Show current date and time')
-  .action(() => {
-    console.log('now ' + new Date());
-  });
-
+// console.log('process.argv', process.argv);
 program.parse(process.argv);
 
 if (!process.argv.slice(2).length) {
