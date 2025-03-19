@@ -1,31 +1,6 @@
 import fs from 'fs';
 import { DateTime } from 'luxon';
 
-const calcReplaceValue = (
-  replaceValue: string,
-  searchValue: string,
-  updatedContent: string,
-  pattern: string
-): string => {
-  if (replaceValue.includes('${$1+1}')) {
-    // console.log(`calc`);
-    // Extract the value of (.*) from updatedContent
-    const match = updatedContent.match(searchValue);
-    // console.log(`match`, match);
-    if (match && match[1]) {
-      const n1 = parseInt(match[1], 10); // Convert the matched value to an integer
-      const incrementedValue = n1 + 1; // Increment the value
-      // console.log(
-      //   `incrementedValue=${incrementedValue}, replaceValue=${replaceValue}`
-      // );
-
-      // Replace "{$1+1}" in replaceValue with the calculated value
-      replaceValue = replaceValue.replace('${$1+1}', `${incrementedValue}`);
-    }
-  }
-  return replaceValue;
-};
-
 export const dsed = async (
   filepath: string,
   expressions: string[],
@@ -37,6 +12,32 @@ export const dsed = async (
     if (isDebug) {
       console.log(...args);
     }
+  };
+  const calcReplaceValue = (
+    replaceValue: string,
+    searchValue: string,
+    updatedContent: string,
+    paramNumber: number
+  ): string => {
+    const pattern = '${$' + paramNumber + '+1}';
+    if (replaceValue.includes(pattern)) {
+      logd(`calcReplaceValue has pattern; pattern=${pattern}`);
+      // Extract the value of (.*) from updatedContent
+      const match = updatedContent.match(searchValue);
+      // console.log(`match`, match);
+      if (match && match[paramNumber]) {
+        const n1 = parseInt(match[paramNumber], 10); // Convert the matched value to an integer
+        const incrementedValue = n1 + 1; // Increment the value
+        // console.log(
+        //   `incrementedValue=${incrementedValue}, replaceValue=${replaceValue}`
+        // );
+
+        // Replace "{$1+1}" in replaceValue with the calculated value
+        replaceValue = replaceValue.replace(pattern, `${incrementedValue}`);
+      }
+      logd(`calcReplaceValue new replaceValue=${replaceValue}`);
+    }
+    return replaceValue;
   };
 
   if (!expressions || expressions.length === 0) {
@@ -74,12 +75,14 @@ export const dsed = async (
         let searchValue = match[1];
         let replaceValue = match[2];
 
-        replaceValue = calcReplaceValue(
-          replaceValue,
-          searchValue,
-          updatedContent,
-          '${$1+1}'
-        );
+        for (let i = 1; i <= 10; i++) {
+          replaceValue = calcReplaceValue(
+            replaceValue,
+            searchValue,
+            updatedContent,
+            i
+          );
+        }
 
         if (useVariable) {
           if (replaceValue.includes('${utcnow}')) {

@@ -12,7 +12,7 @@ linux.
 
 - -e Allows multiple commands to be executed (same as sed).
 
-- -v variable (extra feature)
+- -v enabled variable (eg ${utcnow}, ${$1+1})
 
 ## Variables:
 
@@ -79,12 +79,40 @@ Save to original file
 sed 's/bbb=.*/bbb=222/' 01.txt
 ```
 
-Variable: $utcnow, output 2025-03-19T11:31:59Z
+Date time variable: $utcnow, output 2025-03-19T11:31:59Z
 
 Require -v flag
 
 ```
 sed "s/bbb=.*/bbb=${utcnow}, ${now}, ${date}/" -v 01.txt
+```
+
+Increment variable: ${$1+1}, ... ${$10+1}
+
+Require -v flag
+
+```
+sed 's/bbb=(\d+)/bbb=${$1+1}fff/' 01.txt
+```
+
+```
+bbb=111bb
+->
+bbb=112fffbb
+```
+
+Update version in config file
+
+Require -v flag
+
+```
+sed 's/version=(\d+)\.(\d+)\.(\d+)/version=$1.$2.${$3+1}/' 01.txt
+```
+
+```
+version=1.0.90-prod
+->
+version=1.0.91-prod
 ```
 
 ## Unsupported Examples:
