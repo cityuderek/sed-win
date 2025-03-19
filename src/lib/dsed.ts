@@ -33,7 +33,12 @@ export const dsed = async (
     let updatedContent = content;
 
     // Get current UTC datetime in ISO format without milliseconds
-    const now = DateTime.utc().toFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    const now = DateTime.local();
+    const utcnow = now.toUTC().toFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    const localNow = now.toFormat('yyyy-MM-dd HH:mm:ss'); // e.g., "2025-03-19 08:44:10"
+    const localDate = now.toFormat('yyyy-MM-dd'); // e.g., "2025-03-19"
+    const date8 = now.toFormat('yyyyMMdd'); // e.g., 20250319
+    const datetime15 = now.toFormat('yyyyMMdd_HHmmss'); // e.g., 20250319_084410
 
     expressions.forEach((expression: string) => {
       expression = expression.replace(/^['"]|['"]$/g, ''); // Remove extra quotes
@@ -45,8 +50,20 @@ export const dsed = async (
         let replaceValue = match[2];
 
         if (useVariable) {
-          if (replaceValue.includes('$utcnow')) {
-            replaceValue = replaceValue.replace('$utcnow', now);
+          if (replaceValue.includes('{$utcnow}')) {
+            replaceValue = replaceValue.replace('{$utcnow}', utcnow);
+          }
+          if (replaceValue.includes('{$now}')) {
+            replaceValue = replaceValue.replace('{$now}', localNow);
+          }
+          if (replaceValue.includes('{$date}')) {
+            replaceValue = replaceValue.replace('{$date}', localDate);
+          }
+          if (replaceValue.includes('{$date8}')) {
+            replaceValue = replaceValue.replace('{$date8}', date8);
+          }
+          if (replaceValue.includes('{$datetime15}')) {
+            replaceValue = replaceValue.replace('{$datetime15}', datetime15);
           }
         }
 

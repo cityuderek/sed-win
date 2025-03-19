@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import fs from 'fs';
 import { dsed } from '../lib/dsed.js';
 
 const program = new Command();

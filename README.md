@@ -13,7 +13,24 @@ sed for Windows. It doesn't support everything like sed, but I'm working on it.
 
 ## Variables:
 
-- $utcnow, output 2025-03-19T11:31:59Z
+Remember to include -v flag.
+
+Example:
+
+```
+sed "s/bbb=.*/bbb={$utcnow}, {$now}, {$date}, {$date8}, {$datetime15}/" -v 01.txt
+```
+
+- $utcnow - The current date and time in Coordinated Universal Time (UTC), eg
+  2025-03-19T11:31:59Z
+
+- $now - local date time, eg 2025-03-19T11:31:59Z
+
+- $date - local date, eg 2025-03-19
+
+- $date8 - local date, eg 20250319
+
+- $datetime15 - local date time, eg 20250319_084410
 
 ## Supported features:
 
@@ -64,10 +81,16 @@ Variable: $utcnow, output 2025-03-19T11:31:59Z
 Require -v flag
 
 ```
-sed 's/bbb=.*/bbb=$utcnow/' -v 01.txt
+sed "s/bbb=.*/bbb={$utcnow}, {$now}, {$date}/" -v 01.txt
 ```
 
-## Pending:
+## Unsupported Examples:
+
+In Windows, command must use ", single quote may cause problem
+
+```
+sed 's/bbb=.*/bbb=$utcnow, $now, $date/' 01.txt
+```
 
 ## Background
 
