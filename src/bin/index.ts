@@ -11,11 +11,12 @@ program.name('sed-win').description('sed for Windows').version('1.0.1');
 program
   .option('-e <expression...>', 'sed expressions to apply')
   .option('-i', 'edit file in place')
+  .option('-a', 'avoid using variable such as $utcnow')
   .option('-d', 'debug mode')
-  .option('-v', 'enable variable such as $utcnow')
   .argument('[file...]', 'input file')
   .action(async (file, options) => {
-    const { e, i, d, v } = options;
+    const { e, i, d, a } = options;
+    const v = !a;
     const logd = (...args: any[]) => {
       if (d) {
         console.log(...args);

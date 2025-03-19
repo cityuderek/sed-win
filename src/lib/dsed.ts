@@ -75,16 +75,16 @@ export const dsed = async (
         let searchValue = match[1];
         let replaceValue = match[2];
 
-        for (let i = 1; i <= 10; i++) {
-          replaceValue = calcReplaceValue(
-            replaceValue,
-            searchValue,
-            updatedContent,
-            i
-          );
-        }
-
         if (useVariable) {
+          for (let i = 1; i <= 10; i++) {
+            replaceValue = calcReplaceValue(
+              replaceValue,
+              searchValue,
+              updatedContent,
+              i
+            );
+          }
+
           if (replaceValue.includes('${utcnow}')) {
             replaceValue = replaceValue.replace('${utcnow}', utcnow);
           }
