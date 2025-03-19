@@ -2,6 +2,9 @@
 
 sed for Windows. It doesn't support everything like sed, but I'm working on it.
 
+It allows you using command `sed-win` or `sed` (alias) in DOS, acts like in
+linux.
+
 ## Option
 
 - -i Edit the file in place without printing to the console (overwrite the file)
@@ -18,7 +21,7 @@ Remember to include -v flag.
 Example:
 
 ```
-sed "s/bbb=.*/bbb={$utcnow}, {$now}, {$date}, {$date8}, {$datetime15}/" -v 01.txt
+sed "s/bbb=.*/bbb=${utcnow}, ${now}, ${date}, ${date8}, ${datetime15}/" -v 01.txt
 ```
 
 - $utcnow - The current date and time in Coordinated Universal Time (UTC), eg
@@ -36,9 +39,9 @@ sed "s/bbb=.*/bbb={$utcnow}, {$now}, {$date}, {$date8}, {$datetime15}/" -v 01.tx
 
 - Special characters such as single quote, double quote
 
-- -i
+- -i like sed
 
-- -e
+- -e like sed
 
 ## Examples:
 
@@ -81,7 +84,7 @@ Variable: $utcnow, output 2025-03-19T11:31:59Z
 Require -v flag
 
 ```
-sed "s/bbb=.*/bbb={$utcnow}, {$now}, {$date}/" -v 01.txt
+sed "s/bbb=.*/bbb=${utcnow}, ${now}, ${date}/" -v 01.txt
 ```
 
 ## Unsupported Examples:

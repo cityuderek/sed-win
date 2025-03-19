@@ -1,6 +1,31 @@
 import fs from 'fs';
 import { DateTime } from 'luxon';
 
+const calcReplaceValue = (
+  replaceValue: string,
+  searchValue: string,
+  updatedContent: string,
+  pattern: string
+): string => {
+  if (replaceValue.includes('${$1+1}')) {
+    // console.log(`calc`);
+    // Extract the value of (.*) from updatedContent
+    const match = updatedContent.match(searchValue);
+    // console.log(`match`, match);
+    if (match && match[1]) {
+      const n1 = parseInt(match[1], 10); // Convert the matched value to an integer
+      const incrementedValue = n1 + 1; // Increment the value
+      // console.log(
+      //   `incrementedValue=${incrementedValue}, replaceValue=${replaceValue}`
+      // );
+
+      // Replace "{$1+1}" in replaceValue with the calculated value
+      replaceValue = replaceValue.replace('${$1+1}', `${incrementedValue}`);
+    }
+  }
+  return replaceValue;
+};
+
 export const dsed = async (
   filepath: string,
   expressions: string[],
@@ -49,21 +74,28 @@ export const dsed = async (
         let searchValue = match[1];
         let replaceValue = match[2];
 
+        replaceValue = calcReplaceValue(
+          replaceValue,
+          searchValue,
+          updatedContent,
+          '${$1+1}'
+        );
+
         if (useVariable) {
-          if (replaceValue.includes('{$utcnow}')) {
-            replaceValue = replaceValue.replace('{$utcnow}', utcnow);
+          if (replaceValue.includes('${utcnow}')) {
+            replaceValue = replaceValue.replace('${utcnow}', utcnow);
           }
-          if (replaceValue.includes('{$now}')) {
-            replaceValue = replaceValue.replace('{$now}', localNow);
+          if (replaceValue.includes('${now}')) {
+            replaceValue = replaceValue.replace('${now}', localNow);
           }
-          if (replaceValue.includes('{$date}')) {
-            replaceValue = replaceValue.replace('{$date}', localDate);
+          if (replaceValue.includes('${date}')) {
+            replaceValue = replaceValue.replace('${date}', localDate);
           }
-          if (replaceValue.includes('{$date8}')) {
-            replaceValue = replaceValue.replace('{$date8}', date8);
+          if (replaceValue.includes('${date8}')) {
+            replaceValue = replaceValue.replace('${date8}', date8);
           }
-          if (replaceValue.includes('{$datetime15}')) {
-            replaceValue = replaceValue.replace('{$datetime15}', datetime15);
+          if (replaceValue.includes('${datetime15}')) {
+            replaceValue = replaceValue.replace('${datetime15}', datetime15);
           }
         }
 
